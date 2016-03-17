@@ -22,11 +22,11 @@ class DepanWriter
           node.as_xml(markup)
         end
         @builder.edges.each do |id, edge|
-          markup.tag!("graph-edge") {
-            markup.relation edge.relation
+          markup.tag!("graph-edge") do
+            edge.relation.as_xml(markup)
             markup.head edge.head.ruby_id
             markup.tail edge.tail.ruby_id
-          }
+          end
         end
       }
     }
