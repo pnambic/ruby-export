@@ -1,5 +1,8 @@
 #!/usr/bin/ruby
 class RubyNode < Node
+  def ruby_id
+    "ruby:#{ruby_label}"
+  end
 end
 
 class RubyClass < RubyNode
@@ -15,7 +18,7 @@ class RubyClass < RubyNode
     }
   end
 
-  def ruby_id
+  def ruby_label
     "#{@type}"
   end
 
@@ -66,7 +69,7 @@ class RubyClassMethod < RubyMethod
     as_xml_tag(markup, "ruby-class_method")
   end
 
-  def ruby_id
+  def ruby_label
     "#{type}::#{method}"
   end
 end
@@ -81,7 +84,7 @@ class RubyInstanceMethod < RubyMethod
     as_xml_tag(markup, "ruby-instance_method")
   end
 
-  def ruby_id
+  def ruby_label
     "#{type}.#{method}"
   end
 end
@@ -96,7 +99,7 @@ class RubySingletonMethod < RubyMethod
     as_xml_tag(markup, "ruby-singleton_method")
   end
 
-  def ruby_id
+  def ruby_label
     "#{type}.#{method}"
   end
 end

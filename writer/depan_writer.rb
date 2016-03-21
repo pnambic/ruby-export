@@ -13,9 +13,10 @@ class DepanWriter
     markup.instruct!
     markup.tag!("graph-info") {
       markup.graphAnalyzers {
-        markup.tag!("src-analyzer",'com.google.devtools.depan')
-        markup.tag!("src-analyzer",'com.google.devtools.depan.filesystem')
+        # Analyzer zero is "default", so make Ruby first.
         markup.tag!("src-analyzer",'com.google.devtools.depan.ruby')
+        markup.tag!("src-analyzer",'com.google.devtools.depan.filesystem')
+        markup.tag!("src-analyzer",'com.google.devtools.depan')
       }
       markup.graph {
         @builder.nodes.each do |id, node|

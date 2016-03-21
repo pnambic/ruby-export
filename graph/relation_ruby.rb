@@ -6,7 +6,7 @@ class RubyRelation < Relation
   def self.as_xml(markup)
     markup.relation(
       enum_label,
-      :class=>'com.google.devtools.depan.ruby.graph.RubyRelation')
+      :class=>'ruby-relation')
   end
 end
 
