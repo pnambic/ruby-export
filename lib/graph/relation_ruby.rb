@@ -1,4 +1,3 @@
-#!/usr/bin/ruby
 require_relative "graph"
 
 class RubyRelation < Relation

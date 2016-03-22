@@ -1,4 +1,5 @@
-#!/usr/bin/ruby
+require_relative 'graph'
+
 class RubyNode < Node
   def ruby_id
     "ruby:#{ruby_label}"
@@ -43,8 +44,9 @@ class RubyMethod < RubyNode
 
   def as_xml_tag(markup, tag)
     markup.tag!(tag) {
-      markup.type @type
-      markup.method "#{@method}"
+      # Force names to not be ::Symbol.
+      markup.tag!('type', @type.name.to_s)
+      markup.tag!('method', @method.name.to_s)
     }
   end
 
@@ -70,7 +72,7 @@ class RubyClassMethod < RubyMethod
   end
 
   def ruby_label
-    "#{type}::#{method}"
+    "#{@type.name}::#{@method.name}"
   end
 end
 
@@ -85,7 +87,7 @@ class RubyInstanceMethod < RubyMethod
   end
 
   def ruby_label
-    "#{type}.#{method}"
+    "#{@type.name}.#{@method.name}"
   end
 end
 
@@ -100,6 +102,6 @@ class RubySingletonMethod < RubyMethod
   end
 
   def ruby_label
-    "#{type}.#{method}"
+    "#{@type.name}.#{@method.name}"
   end
 end
