@@ -7,9 +7,10 @@ require_relative "../graph/relation_ruby"
 class AnalyzeMethod
 
   def analyze
-    @builder.logger.info "METHOD: #{@method}"
+    site = @method_node.site
+    @builder.logger.info "METHOD: #{site}"
 
-    iseq = RubyVM::InstructionSequence.of(@method)
+    iseq = RubyVM::InstructionSequence.of(site)
     return if iseq.nil?
 
     byte_info = AnalyzeBytecode.new(@builder, self, iseq)
@@ -17,17 +18,22 @@ class AnalyzeMethod
   end
 
   def lookup_receiver(sym)
-    scope = @method.owner
+    site = @method_node.site
+    scope = site.owner
     result = lookup_scope_receiver(scope, sym)
     return result unless result.nil?
 
     @type.lookup_receiver(sym)
   end
 
-  def initialize(builder, type, method)
+  def add_dest_depend(dest_node, relation)
+    @builder.add_depend(@method_node, dest_node, relation)
+  end
+
+  def initialize(builder, type, method_node)
     @builder = builder
     @type = type
-    @method = method
+    @method_node = method_node
   end
 
   private

@@ -24,3 +24,7 @@ end
 class RubySingletonMethodMember < RubyRelation
   def self.enum_label; 'SINGLETON_MEMBER' end
 end
+
+class RubyStaticCall < RubyRelation
+  def self.enum_label; 'STATIC_CALL' end
+end

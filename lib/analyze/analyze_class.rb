@@ -48,7 +48,7 @@ class AnalyzeClass
     method_node = kind.new @type, method
     @builder.add_depend(@type_node, method_node, relation)
 
-    analyzer = AnalyzeMethod.new(@builder, self, method)
+    analyzer = AnalyzeMethod.new(@builder, self, method_node)
     analyzer.analyze
   end
 

@@ -1,3 +1,5 @@
+require_relative "../graph/relation_ruby"
+
 class AnalyzeBytecode
 
   # Do these bytecodes ever yield() to a block?
@@ -11,7 +13,9 @@ class AnalyzeBytecode
     @method = method
     @iseq = iseq
 
-    #Explicit receiver, from getconstant interpretation
+    # Primitive symbolic execution state.
+    # Only tracks getconstant execution to guess at dependent classes
+    # and methods.
     @receiver = nil
   end
 
@@ -55,7 +59,9 @@ class AnalyzeBytecode
 
       # Call links for static receivers
       method = instr[1][:mid]
-      resolved = calc_method(method)
+      dest_node = build_method_node(method)
+      return if dest_node.nil?
+      @method.add_dest_depend(dest_node, RubyStaticCall)
 
     when :invokesuper
       method = instr[1][:mid]
@@ -153,6 +159,21 @@ class AnalyzeBytecode
   end
 
   private
+
+  def build_method_node(sym)
+
+    dest = calc_method(sym)
+    return if dest.nil? || dest.owner.nil?
+
+    owner = first_concrete_class(dest.owner)
+    dest_node = RubyClassMethod.new(owner, dest)
+  end
+
+  def first_concrete_class(method)
+    method.ancestors.each do |elder|
+      return elder unless elder.singleton_class?
+    end
+  end
 
   def calc_method(sym)
     scope = @receiver

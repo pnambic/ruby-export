@@ -34,37 +34,41 @@ class RubyClass < RubyNode
 end
 
 class RubyMethod < RubyNode
-  attr_reader :type
-  attr_reader :method
 
-  def initialize(type, method)
+  # Type Class
+  attr_reader :type
+
+  # Type Method
+  attr_reader :site
+
+  def initialize(type, site)
     @type = type
-    @method = method
+    @site = site
   end
 
   def as_xml_tag(markup, tag)
     markup.tag!(tag) {
       # Force names to not be ::Symbol.
       markup.tag!('type', @type.name.to_s)
-      markup.tag!('method', @method.name.to_s)
+      markup.tag!('method', @site.name.to_s)
     }
   end
 
   def ==(other)
     self.type == other.type &&
-    self.method == other.method
+    self.site == other.site
   end
   alias :eql? :==
 
   def hash
-    [@type, @method].hash
+    [@type, @site].hash
   end
 end
 
 class RubyClassMethod < RubyMethod
 
-  def initialize(type, method)
-    super type, method
+  def initialize(type, site)
+    super type, site
   end
 
   def as_xml(markup)
@@ -72,7 +76,7 @@ class RubyClassMethod < RubyMethod
   end
 
   def ruby_label
-    "#{@type.name}::#{@method.name}"
+    "#{@type.name}::#{@site.name}"
   end
 end
 
@@ -87,7 +91,7 @@ class RubyInstanceMethod < RubyMethod
   end
 
   def ruby_label
-    "#{@type.name}.#{@method.name}"
+    "#{@type.name}.#{@site.name}"
   end
 end
 
@@ -102,6 +106,6 @@ class RubySingletonMethod < RubyMethod
   end
 
   def ruby_label
-    "#{@type.name}.#{@method.name}"
+    "#{@type.name}.#{@site.name}"
   end
 end
