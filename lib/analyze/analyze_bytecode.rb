@@ -8,9 +8,9 @@ class AnalyzeBytecode
   # Do these bytecodes include unknown (not analyzed) behaviors?
   attr_reader :unknowns
 
-  def initialize(builder, method, iseq)
+  def initialize(builder, site_info, iseq)
     @builder = builder
-    @method = method
+    @site_info = site_info
     @iseq = iseq
 
     # Primitive symbolic execution state.
@@ -61,7 +61,7 @@ class AnalyzeBytecode
       method = instr[1][:mid]
       dest_node = build_method_node(method)
       return if dest_node.nil?
-      @method.add_dest_depend(dest_node, RubyStaticCall)
+      @site_info.add_dest_depend(dest_node, RubyStaticCall)
 
     when :invokesuper
       method = instr[1][:mid]
@@ -165,8 +165,8 @@ class AnalyzeBytecode
     dest = calc_method(sym)
     return if dest.nil? || dest.owner.nil?
 
-    owner = first_concrete_class(dest.owner)
-    dest_node = RubyClassMethod.new(owner, dest)
+    receiver = dest.receiver
+    dest_node = RubyClassMethod.new(receiver, dest)
   end
 
   def first_concrete_class(method)
@@ -202,7 +202,7 @@ class AnalyzeBytecode
     @receiver = nil
 
     return lookup_scope_symbol(scope, sym) unless scope.nil?
-    @method.lookup_receiver(sym)
+    @site_info.lookup_receiver(sym)
   end
 
   def lookup_scope_symbol(scope, sym)

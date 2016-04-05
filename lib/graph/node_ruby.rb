@@ -82,8 +82,8 @@ end
 
 class RubyInstanceMethod < RubyMethod
 
-  def initialize(type, method)
-    super type, method
+  def initialize(type, site)
+    super type, site
   end
 
   def as_xml(markup)
@@ -97,8 +97,8 @@ end
 
 class RubySingletonMethod < RubyMethod
 
-  def initialize(type, method)
-    super type, method
+  def initialize(type, site)
+    super type, site
   end
 
   def as_xml(markup)

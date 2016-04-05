@@ -55,7 +55,7 @@ class RubyExport
     symbols.each do |symbol|
       type = Kernel.const_get(symbol)
       if type.nil?
-        puts "Unrecognized symbol #{symbol}"
+        @logger.warn "Unrecognized symbol #{symbol}"
         break
       end
       result << type

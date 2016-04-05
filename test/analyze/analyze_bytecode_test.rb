@@ -7,6 +7,7 @@ require 'logger'
 require_relative 'class_simple'
 
 class AnalyzeBytecodeTest < Minitest::Test
+
   def test_analyze_simple
     builder = GraphBuilder.new(Logger.new(STDERR))
     method = ClassSimple.instance_method(:simple)

@@ -23,16 +23,16 @@ class AnalyzeMethod
     result = lookup_scope_receiver(scope, sym)
     return result unless result.nil?
 
-    @type.lookup_receiver(sym)
+    @type_info.lookup_receiver(sym)
   end
 
   def add_dest_depend(dest_node, relation)
     @builder.add_depend(@method_node, dest_node, relation)
   end
 
-  def initialize(builder, type, method_node)
+  def initialize(builder, type_info, method_node)
     @builder = builder
-    @type = type
+    @type_info = type_info
     @method_node = method_node
   end
 

@@ -25,6 +25,7 @@ class GraphBuilder
   def get_node(node)
     result = @nodes[node]
     return result unless result.nil?
+    logger.info "Adding #{node.ruby_id}"
     @nodes[node] = node
     return node
   end
